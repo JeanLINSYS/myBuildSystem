@@ -71,26 +71,6 @@ def call(lvProjectPath, lvBuildSpecName, lvVersion, lvBitness) {
 				}
 		}
 		
-		withCredentials([string(credentialsId: 'github-access-token', variable: 'accessToken')]) {
-			
-			echo 'Running diff...'
-		
-			// If this change is a pull request, diff the VIs.
-			if (env.CHANGE_ID) {
-				stage ('Diff VIs'){
-					
-					try {
-					timeout(time: 60, unit: 'MINUTES') {
-						lvDiff(lvVersion, lvBitness, accessToken)
-						echo 'Diff Succeeded!'
-					}
-					} catch (err) {
-						currentBuild.result = "SUCCESS"
-						echo "Diff Failed: ${err}"
-					}
-				}
-			}
-		}
 	}
 }
 
